@@ -6,11 +6,6 @@
 ![Dashboard](assets/dashboard_preview_2.png)
 ![Dashboard](assets/dashboard_preview_3.png)
 
-![Python](https://img.shields.io/badge/Python-3.9%2B-blue)
-![scikit-learn](https://img.shields.io/badge/scikit--learn-1.2%2B-orange)
-
-
-
 ---
 
 ## What this is
