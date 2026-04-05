@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>PL Predictor v4 · 2025/2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#08080e;--s1:#111118;--s2:#1a1a24;--s3:#22222e;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.11);
+  --text:#dddde8;--muted:#5e5e72;--accent:#00d4aa;--purple:#7c6cfc;
+  --red:#ff4d6d;--amber:#ffb347;--green:#00d4aa;--blue:#4da6ff;
+  --display:'Bebas Neue',sans-serif;--body:'DM Sans',sans-serif;--mono:'DM Mono',monospace
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:14px;line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+
+/* hero */
+.hero{padding:64px 0 48px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-150px;right:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(0,212,170,0.05) 0%,transparent 65%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-80px;left:300px;width:400px;height:400px;background:radial-gradient(circle,rgba(124,108,252,0.04) 0%,transparent 65%);pointer-events:none}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:0.18em;color:var(--accent);text-transform:uppercase;margin-bottom:18px}
+.hero-title{font-family:var(--display);font-size:clamp(52px,9vw,96px);letter-spacing:0.02em;line-height:0.9;margin-bottom:24px}
+.hero-title em{color:var(--accent);font-style:normal}
+.hero-sub{font-size:14px;color:var(--muted);max-width:640px;line-height:1.8;margin-bottom:32px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:5px 12px;border-radius:100px;font-family:var(--mono);font-size:10px;letter-spacing:0.07em;border:1px solid var(--border2);color:var(--muted)}
+.chip.hi{border-color:rgba(0,212,170,0.28);color:var(--accent);background:rgba(0,212,170,0.05)}
+.chip.warn{border-color:rgba(255,179,71,0.28);color:var(--amber);background:rgba(255,179,71,0.05)}
+
+/* kpi strip */
+.kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border)}
+.kpi{background:var(--s1);padding:28px 24px}
+.kpi-val{font-family:var(--display);font-size:46px;letter-spacing:0.02em;line-height:1;margin-bottom:5px}
+.kpi-label{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase}
+.kpi-sub{font-size:11px;color:var(--muted);margin-top:3px}
+
+/* section label */
+.slabel{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.slabel::after{content:'';flex:1;height:1px;background:var(--border)}
+.ctitle{font-family:var(--display);font-size:26px;letter-spacing:0.04em;line-height:1.1;margin-bottom:4px}
+
+/* layout */
+.divider{height:1px;background:var(--border)}
+.grid{display:grid;gap:1px;background:var(--border)}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr 1fr}
+.card{background:var(--bg);padding:32px}
+.card0{background:var(--bg);padding:32px 0}
+
+/* table */
+table{width:100%;border-collapse:collapse}
+th{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);padding:8px 10px;text-align:right;border-bottom:1px solid var(--border)}
+th:first-child,th:nth-child(2){text-align:left}
+th:last-child{text-align:left}
+td{padding:9px 10px;border-bottom:1px solid rgba(255,255,255,0.04);font-size:13px;text-align:right;vertical-align:middle}
+td:first-child{text-align:center;width:26px;color:var(--muted);font-family:var(--mono);font-size:11px}
+td:nth-child(2){text-align:left;font-weight:500}
+td:last-child{text-align:left}
+tr:hover td{background:rgba(255,255,255,0.015)}
+
+/* match grid */
+.mgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border)}
+
+/* story section */
+.story{padding:48px 0;background:var(--s1)}
+.story-inner{max-width:720px}
+.story h2{font-family:var(--display);font-size:42px;letter-spacing:0.03em;margin-bottom:20px;color:var(--text)}
+.story p{font-size:14px;color:var(--muted);line-height:1.85;margin-bottom:16px}
+.story strong{color:var(--text);font-weight:500}
+.story .highlight{color:var(--accent)}
+.methodology-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+.method-card{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:20px}
+.method-card h3{font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.method-card p{font-size:12px;color:var(--muted);line-height:1.7}
+
+/* footer */
+.footer{padding:32px 0;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px}
+.footer-block{font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.9}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.card,.kpi,.card0{animation:fadeUp .5s ease both}
+@media(max-width:900px){.g2,.g3,.kpi-strip,.mgrid{grid-template-columns:1fr}.hero-title{font-size:52px}.wrap{padding:0 20px}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+<div class="wrap">
+  <div class="eyebrow">Machine Learning · Analytics · Premier League 2025/26</div>
+  <h1 class="hero-title">PREMIER LEAGUE<br/><em>SEASON</em> PREDICTOR</h1>
+  <p class="hero-sub">An end-to-end probabilistic forecasting system built on 6,009 matches across 16 seasons. Gradient boosting with walk-forward validation, ELO power ratings, progressive form blending, and 5,000-run Monte Carlo simulation — built to demonstrate production-grade sports analytics.</p>
+  <div class="chips">
+    <span class="chip hi">v4 · GW31 Cutoff · 2026-03-22</span>
+    <span class="chip warn">Data 14 days old — GW32 upcoming</span>
+    <span class="chip">5,000 Monte Carlo runs</span>
+    <span class="chip">50.8% match accuracy</span>
+    <span class="chip">Log loss 1.108</span>
+    <span class="chip">26 features</span>
+    <span class="chip">HistGradientBoosting</span>
+  </div>
+</div>
+</div>
+
+<div class="kpi-strip">
+  <div class="kpi"><div class="kpi-val" style="color:var(--accent)">99.3<span style="font-size:24px">%</span></div><div class="kpi-label">Arsenal title probability</div><div class="kpi-sub">5,000-simulation forecast</div></div>
+  <div class="kpi"><div class="kpi-val" style="color:var(--purple)">50.8<span style="font-size:24px">%</span></div><div class="kpi-label">Match prediction accuracy</div><div class="kpi-sub">Walk-forward validated · beats 45% baseline</div></div>
+  <div class="kpi"><div class="kpi-val" style="color:var(--amber)">6,009</div><div class="kpi-label">Matches trained on</div><div class="kpi-sub">2010/11 → 2025/26 · 16 seasons</div></div>
+  <div class="kpi"><div class="kpi-val" style="color:var(--blue)">1.108</div><div class="kpi-label">Mean log loss</div><div class="kpi-sub">Calibrated uncertainty quantification</div></div>
+</div>
+
+<div class="divider"></div>
+
+<div class="grid g2" style="border-top:1px solid var(--border)">
+  <div class="card">
+    <div class="slabel">Season forecast</div>
+    <div class="ctitle" style="margin-bottom:24px">CHAMPIONSHIP<br/>PROBABILITY</div>
+    <div style="margin-bottom:12px">
+<div style="display:flex;justify-content:space-between;margin-bottom:4px">
+  <span style="font-size:13px;font-weight:500;color:var(--accent)">Arsenal</span>
+  <span style="font-family:var(--mono);font-size:12px;color:var(--accent)">98.9%</span>
+</div>
+<div style="height:5px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:98.9%;height:100%;background:var(--accent);border-radius:100px"></div>
+</div>
+<div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px">70 pts · 7 games left</div>
+</div><div style="margin-bottom:12px">
+<div style="display:flex;justify-content:space-between;margin-bottom:4px">
+  <span style="font-size:13px;font-weight:500;color:var(--accent)">Man City</span>
+  <span style="font-family:var(--mono);font-size:12px;color:var(--accent)">1.1%</span>
+</div>
+<div style="height:5px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:1.1%;height:100%;background:var(--accent);border-radius:100px"></div>
+</div>
+<div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px">61 pts · 8 games left</div>
+</div>
+    <div style="margin-top:28px;padding-top:22px;border-top:1px solid var(--border)">
+      <div class="slabel" style="margin-bottom:14px">Top 4 finish probability</div>
+      <div style="margin-bottom:12px">
+<div style="display:flex;justify-content:space-between;margin-bottom:4px">
+  <span style="font-size:13px;font-weight:500;color:var(--text)">Arsenal</span>
+  <span style="font-family:var(--mono);font-size:12px;color:var(--purple)">100.0%</span>
+</div>
+<div style="height:5px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:100.0%;height:100%;background:var(--purple);border-radius:100px"></div>
+</div>
+<div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px">70 pts · 7 games left</div>
+</div><div style="margin-bottom:12px">
+<div style="display:flex;justify-content:space-between;margin-bottom:4px">
+  <span style="font-size:13px;font-weight:500;color:var(--text)">Man City</span>
+  <span style="font-family:var(--mono);font-size:12px;color:var(--purple)">99.6%</span>
+</div>
+<div style="height:5px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:99.6%;height:100%;background:var(--purple);border-radius:100px"></div>
+</div>
+<div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px">61 pts · 8 games left</div>
+</div><div style="margin-bottom:12px">
+<div style="display:flex;justify-content:space-between;margin-bottom:4px">
+  <span style="font-size:13px;font-weight:500;color:var(--text)">Man United</span>
+  <span style="font-family:var(--mono);font-size:12px;color:var(--purple)">94.6%</span>
+</div>
+<div style="height:5px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:94.6%;height:100%;background:var(--purple);border-radius:100px"></div>
+</div>
+<div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px">55 pts · 7 games left</div>
+</div><div style="margin-bottom:12px">
+<div style="display:flex;justify-content:space-between;margin-bottom:4px">
+  <span style="font-size:13px;font-weight:500;color:var(--text)">Aston Villa</span>
+  <span style="font-family:var(--mono);font-size:12px;color:var(--purple)">63.6%</span>
+</div>
+<div style="height:5px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:63.6%;height:100%;background:var(--purple);border-radius:100px"></div>
+</div>
+<div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px">54 pts · 7 games left</div>
+</div><div style="margin-bottom:12px">
+<div style="display:flex;justify-content:space-between;margin-bottom:4px">
+  <span style="font-size:13px;font-weight:500;color:var(--text)">Chelsea</span>
+  <span style="font-family:var(--mono);font-size:12px;color:var(--purple)">21.7%</span>
+</div>
+<div style="height:5px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:21.7%;height:100%;background:var(--purple);border-radius:100px"></div>
+</div>
+<div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px">48 pts · 7 games left</div>
+</div><div style="margin-bottom:12px">
+<div style="display:flex;justify-content:space-between;margin-bottom:4px">
+  <span style="font-size:13px;font-weight:500;color:var(--text)">Liverpool</span>
+  <span style="font-family:var(--mono);font-size:12px;color:var(--purple)">6.8%</span>
+</div>
+<div style="height:5px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:6.8%;height:100%;background:var(--purple);border-radius:100px"></div>
+</div>
+<div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px">49 pts · 7 games left</div>
+</div><div style="margin-bottom:12px">
+<div style="display:flex;justify-content:space-between;margin-bottom:4px">
+  <span style="font-size:13px;font-weight:500;color:var(--text)">Everton</span>
+  <span style="font-family:var(--mono);font-size:12px;color:var(--purple)">6.1%</span>
+</div>
+<div style="height:5px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:6.1%;height:100%;background:var(--purple);border-radius:100px"></div>
+</div>
+<div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px">46 pts · 7 games left</div>
+</div>
+    </div>
+    <div style="margin-top:22px;padding-top:20px;border-top:1px solid var(--border)">
+      <div class="slabel" style="margin-bottom:14px">Relegation probability</div>
+      <div style="margin-bottom:12px">
+<div style="display:flex;justify-content:space-between;margin-bottom:4px">
+  <span style="font-size:13px;font-weight:500;color:var(--red)">Wolves</span>
+  <span style="font-family:var(--mono);font-size:12px;color:var(--red)">100.0%</span>
+</div>
+<div style="height:5px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:100.0%;height:100%;background:var(--red);border-radius:100px"></div>
+</div>
+<div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px">17 pts · 7 games left</div>
+</div><div style="margin-bottom:12px">
+<div style="display:flex;justify-content:space-between;margin-bottom:4px">
+  <span style="font-size:13px;font-weight:500;color:var(--red)">Burnley</span>
+  <span style="font-family:var(--mono);font-size:12px;color:var(--red)">99.8%</span>
+</div>
+<div style="height:5px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:99.8%;height:100%;background:var(--red);border-radius:100px"></div>
+</div>
+<div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px">20 pts · 7 games left</div>
+</div><div style="margin-bottom:12px">
+<div style="display:flex;justify-content:space-between;margin-bottom:4px">
+  <span style="font-size:13px;font-weight:500;color:var(--red)">Tottenham</span>
+  <span style="font-family:var(--mono);font-size:12px;color:var(--red)">38.6%</span>
+</div>
+<div style="height:5px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:38.6%;height:100%;background:var(--red);border-radius:100px"></div>
+</div>
+<div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px">30 pts · 7 games left</div>
+</div><div style="margin-bottom:12px">
+<div style="display:flex;justify-content:space-between;margin-bottom:4px">
+  <span style="font-size:13px;font-weight:500;color:var(--red)">West Ham</span>
+  <span style="font-family:var(--mono);font-size:12px;color:var(--red)">37.4%</span>
+</div>
+<div style="height:5px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:37.4%;height:100%;background:var(--red);border-radius:100px"></div>
+</div>
+<div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px">29 pts · 7 games left</div>
+</div><div style="margin-bottom:12px">
+<div style="display:flex;justify-content:space-between;margin-bottom:4px">
+  <span style="font-size:13px;font-weight:500;color:var(--red)">Nott'm Forest</span>
+  <span style="font-family:var(--mono);font-size:12px;color:var(--red)">18.0%</span>
+</div>
+<div style="height:5px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:18.0%;height:100%;background:var(--red);border-radius:100px"></div>
+</div>
+<div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px">32 pts · 7 games left</div>
+</div><div style="margin-bottom:12px">
+<div style="display:flex;justify-content:space-between;margin-bottom:4px">
+  <span style="font-size:13px;font-weight:500;color:var(--red)">Leeds</span>
+  <span style="font-family:var(--mono);font-size:12px;color:var(--red)">5.9%</span>
+</div>
+<div style="height:5px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:5.9%;height:100%;background:var(--red);border-radius:100px"></div>
+</div>
+<div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px">33 pts · 7 games left</div>
+</div>
+    </div>
+  </div>
+  <div class="card0">
+    <div style="padding:0 32px"><div class="slabel">League table</div><div class="ctitle" style="margin-bottom:18px">PREMIER LEAGUE<br/>STANDINGS</div></div>
+    <table><thead><tr><th>#</th><th>Team</th><th>GP</th><th>W</th><th>D</th><th>L</th><th>GD</th><th>Pts</th><th>Form</th></tr></thead>
+    <tbody><tr>
+<td style="color:var(--muted);font-family:var(--mono);font-size:11px">1</td>
+<td style="color:var(--accent)"><span style="display:inline-block;width:3px;height:14px;border-radius:2px;background:#7c6cfc;margin-right:6px;vertical-align:middle"></span>Arsenal <span style="font-size:9px;color:var(--accent)">★</span></td>
+<td>31</td><td>21</td><td>7</td><td>3</td>
+<td style="color:var(--green)">+39</td>
+<td style="font-family:var(--mono);font-weight:500;color:var(--accent)">70</td>
+<td style="white-space:nowrap"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span></td>
+</tr><tr>
+<td style="color:var(--muted);font-family:var(--mono);font-size:11px">2</td>
+<td ><span style="display:inline-block;width:3px;height:14px;border-radius:2px;background:#7c6cfc;margin-right:6px;vertical-align:middle"></span>Man City</td>
+<td>30</td><td>18</td><td>7</td><td>5</td>
+<td style="color:var(--green)">+32</td>
+<td style="font-family:var(--mono);font-weight:500">61</td>
+<td style="white-space:nowrap"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span></td>
+</tr><tr>
+<td style="color:var(--muted);font-family:var(--mono);font-size:11px">3</td>
+<td ><span style="display:inline-block;width:3px;height:14px;border-radius:2px;background:#7c6cfc;margin-right:6px;vertical-align:middle"></span>Man United</td>
+<td>31</td><td>15</td><td>10</td><td>6</td>
+<td style="color:var(--green)">+13</td>
+<td style="font-family:var(--mono);font-weight:500">55</td>
+<td style="white-space:nowrap"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span></td>
+</tr><tr>
+<td style="color:var(--muted);font-family:var(--mono);font-size:11px">4</td>
+<td ><span style="display:inline-block;width:3px;height:14px;border-radius:2px;background:#7c6cfc;margin-right:6px;vertical-align:middle"></span>Aston Villa</td>
+<td>31</td><td>16</td><td>6</td><td>9</td>
+<td style="color:var(--green)">+5</td>
+<td style="font-family:var(--mono);font-weight:500">54</td>
+<td style="white-space:nowrap"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span></td>
+</tr><tr>
+<td style="color:var(--muted);font-family:var(--mono);font-size:11px">5</td>
+<td ><span style="display:inline-block;width:3px;height:14px;margin-right:6px;vertical-align:middle"></span>Liverpool</td>
+<td>31</td><td>14</td><td>7</td><td>10</td>
+<td style="color:var(--green)">+8</td>
+<td style="font-family:var(--mono);font-weight:500">49</td>
+<td style="white-space:nowrap"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span></td>
+</tr><tr>
+<td style="color:var(--muted);font-family:var(--mono);font-size:11px">6</td>
+<td ><span style="display:inline-block;width:3px;height:14px;margin-right:6px;vertical-align:middle"></span>Chelsea</td>
+<td>31</td><td>13</td><td>9</td><td>9</td>
+<td style="color:var(--green)">+15</td>
+<td style="font-family:var(--mono);font-weight:500">48</td>
+<td style="white-space:nowrap"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span></td>
+</tr><tr>
+<td style="color:var(--muted);font-family:var(--mono);font-size:11px">7</td>
+<td ><span style="display:inline-block;width:3px;height:14px;margin-right:6px;vertical-align:middle"></span>Brentford</td>
+<td>31</td><td>13</td><td>7</td><td>11</td>
+<td style="color:var(--green)">+4</td>
+<td style="font-family:var(--mono);font-weight:500">46</td>
+<td style="white-space:nowrap"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span></td>
+</tr><tr>
+<td style="color:var(--muted);font-family:var(--mono);font-size:11px">8</td>
+<td ><span style="display:inline-block;width:3px;height:14px;margin-right:6px;vertical-align:middle"></span>Everton</td>
+<td>31</td><td>13</td><td>7</td><td>11</td>
+<td style="color:var(--green)">+2</td>
+<td style="font-family:var(--mono);font-weight:500">46</td>
+<td style="white-space:nowrap"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span></td>
+</tr><tr>
+<td style="color:var(--muted);font-family:var(--mono);font-size:11px">9</td>
+<td ><span style="display:inline-block;width:3px;height:14px;margin-right:6px;vertical-align:middle"></span>Fulham</td>
+<td>31</td><td>13</td><td>5</td><td>13</td>
+<td style="color:var(--red)">-1</td>
+<td style="font-family:var(--mono);font-weight:500">44</td>
+<td style="white-space:nowrap"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span></td>
+</tr><tr>
+<td style="color:var(--muted);font-family:var(--mono);font-size:11px">10</td>
+<td ><span style="display:inline-block;width:3px;height:14px;margin-right:6px;vertical-align:middle"></span>Brighton</td>
+<td>31</td><td>11</td><td>10</td><td>10</td>
+<td style="color:var(--green)">+4</td>
+<td style="font-family:var(--mono);font-weight:500">43</td>
+<td style="white-space:nowrap"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span></td>
+</tr><tr>
+<td style="color:var(--muted);font-family:var(--mono);font-size:11px">11</td>
+<td ><span style="display:inline-block;width:3px;height:14px;margin-right:6px;vertical-align:middle"></span>Sunderland</td>
+<td>31</td><td>11</td><td>10</td><td>10</td>
+<td style="color:var(--red)">-4</td>
+<td style="font-family:var(--mono);font-weight:500">43</td>
+<td style="white-space:nowrap"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span></td>
+</tr><tr>
+<td style="color:var(--muted);font-family:var(--mono);font-size:11px">12</td>
+<td ><span style="display:inline-block;width:3px;height:14px;margin-right:6px;vertical-align:middle"></span>Bournemouth</td>
+<td>31</td><td>9</td><td>15</td><td>7</td>
+<td style="color:var(--red)">-2</td>
+<td style="font-family:var(--mono);font-weight:500">42</td>
+<td style="white-space:nowrap"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span></td>
+</tr><tr>
+<td style="color:var(--muted);font-family:var(--mono);font-size:11px">13</td>
+<td ><span style="display:inline-block;width:3px;height:14px;margin-right:6px;vertical-align:middle"></span>Newcastle</td>
+<td>31</td><td>12</td><td>6</td><td>13</td>
+<td style="color:var(--red)">-1</td>
+<td style="font-family:var(--mono);font-weight:500">42</td>
+<td style="white-space:nowrap"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span></td>
+</tr><tr>
+<td style="color:var(--muted);font-family:var(--mono);font-size:11px">14</td>
+<td ><span style="display:inline-block;width:3px;height:14px;margin-right:6px;vertical-align:middle"></span>Crystal Palace</td>
+<td>30</td><td>10</td><td>9</td><td>11</td>
+<td style="color:var(--red)">-2</td>
+<td style="font-family:var(--mono);font-weight:500">39</td>
+<td style="white-space:nowrap"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span></td>
+</tr><tr>
+<td style="color:var(--muted);font-family:var(--mono);font-size:11px">15</td>
+<td ><span style="display:inline-block;width:3px;height:14px;margin-right:6px;vertical-align:middle"></span>Leeds</td>
+<td>31</td><td>7</td><td>12</td><td>12</td>
+<td style="color:var(--red)">-11</td>
+<td style="font-family:var(--mono);font-weight:500">33</td>
+<td style="white-space:nowrap"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span></td>
+</tr><tr>
+<td style="color:var(--muted);font-family:var(--mono);font-size:11px">16</td>
+<td ><span style="display:inline-block;width:3px;height:14px;margin-right:6px;vertical-align:middle"></span>Nott'm Forest</td>
+<td>31</td><td>8</td><td>8</td><td>15</td>
+<td style="color:var(--red)">-12</td>
+<td style="font-family:var(--mono);font-weight:500">32</td>
+<td style="white-space:nowrap"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span></td>
+</tr><tr>
+<td style="color:var(--muted);font-family:var(--mono);font-size:11px">17</td>
+<td ><span style="display:inline-block;width:3px;height:14px;border-radius:2px;background:#ff4d6d;margin-right:6px;vertical-align:middle"></span>Tottenham</td>
+<td>31</td><td>7</td><td>9</td><td>15</td>
+<td style="color:var(--red)">-10</td>
+<td style="font-family:var(--mono);font-weight:500">30</td>
+<td style="white-space:nowrap"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span></td>
+</tr><tr>
+<td style="color:var(--muted);font-family:var(--mono);font-size:11px">18</td>
+<td ><span style="display:inline-block;width:3px;height:14px;border-radius:2px;background:#ff4d6d;margin-right:6px;vertical-align:middle"></span>West Ham</td>
+<td>31</td><td>7</td><td>8</td><td>16</td>
+<td style="color:var(--red)">-21</td>
+<td style="font-family:var(--mono);font-weight:500">29</td>
+<td style="white-space:nowrap"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span></td>
+</tr><tr>
+<td style="color:var(--muted);font-family:var(--mono);font-size:11px">19</td>
+<td ><span style="display:inline-block;width:3px;height:14px;border-radius:2px;background:#ff4d6d;margin-right:6px;vertical-align:middle"></span>Burnley</td>
+<td>31</td><td>4</td><td>8</td><td>19</td>
+<td style="color:var(--red)">-28</td>
+<td style="font-family:var(--mono);font-weight:500">20</td>
+<td style="white-space:nowrap"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span></td>
+</tr><tr>
+<td style="color:var(--muted);font-family:var(--mono);font-size:11px">20</td>
+<td ><span style="display:inline-block;width:3px;height:14px;border-radius:2px;background:#ff4d6d;margin-right:6px;vertical-align:middle"></span>Wolves</td>
+<td>31</td><td>3</td><td>8</td><td>20</td>
+<td style="color:var(--red)">-30</td>
+<td style="font-family:var(--mono);font-weight:500">17</td>
+<td style="white-space:nowrap"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,77,109,0.10);color:#ff4d6d;font-size:9px;font-weight:700;margin-left:2px">L</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(0,212,170,0.15);color:#00d4aa;font-size:9px;font-weight:700;margin-left:2px">W</span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:3px;background:rgba(255,179,71,0.15);color:#ffb347;font-size:9px;font-weight:700;margin-left:2px">D</span></td>
+</tr></tbody></table>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="wrap" style="padding-top:32px;padding-bottom:32px">
+  <div style="background:rgba(255,179,71,0.08);border:1px solid rgba(255,179,71,0.2);border-radius:8px;padding:14px 20px;margin-bottom:24px;display:flex;align-items:flex-start;gap:14px">
+<div style="width:6px;height:6px;border-radius:50%;background:var(--amber);margin-top:5px;flex-shrink:0"></div>
+<div>
+<div style="font-family:var(--mono);font-size:11px;color:var(--amber);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px">Data gap — 14 days</div>
+<div style="font-size:12px;color:var(--muted);line-height:1.7">CSV data cuts off at <strong style="color:var(--text)">2026-03-22</strong>. GW32 kicks off April 10. No missing results — we're currently in the international break window between GW31 and GW32. GW32 fixture predictions below are based on GW31 form and table position. Refresh by downloading the latest CSV from football-data.co.uk.</div>
+</div>
+</div>
+</div>
+
+<div class="card" style="padding:32px">
+  <div class="slabel">GW32 fixture predictions · April 10–13 2026</div>
+  <div class="ctitle" style="margin-bottom:6px">UPCOMING MATCH PROBABILITIES</div>
+  <p style="font-size:12px;color:var(--muted);margin-bottom:22px">Based on GW31 form, table position and ELO ratings. Pass real bookmaker odds to <code>predict_match()</code> for sharper estimates.</p>
+  <div class="mgrid"><div style="background:var(--s1);padding:22px;text-align:center">
+<div style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;margin-bottom:10px">GW32 fixture</div>
+<div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:18px">
+  <span style="font-weight:600;font-size:13px;color:var(--blue)">West Ham</span>
+  <span style="font-family:var(--mono);font-size:10px;color:var(--muted)">vs</span>
+  <span style="font-weight:600;font-size:13px;color:var(--red)">Wolves</span>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--blue);line-height:1">32<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Home</div>
+  <div style="height:3px;background:rgba(77,166,255,0.2);border-radius:100px"><div style="width:32%;height:100%;background:var(--blue);border-radius:100px"></div></div></div>
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--amber);line-height:1">41<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Draw</div>
+  <div style="height:3px;background:rgba(255,179,71,0.15);border-radius:100px"><div style="width:41%;height:100%;background:var(--amber);border-radius:100px"></div></div></div>
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--red);line-height:1">28<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Away</div>
+  <div style="height:3px;background:rgba(255,77,109,0.12);border-radius:100px"><div style="width:28%;height:100%;background:var(--red);border-radius:100px"></div></div></div>
+</div>
+<div style="margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--amber)">Model favours: Draw</div>
+</div><div style="background:var(--s1);padding:22px;text-align:center">
+<div style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;margin-bottom:10px">GW32 fixture</div>
+<div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:18px">
+  <span style="font-weight:600;font-size:13px;color:var(--blue)">Arsenal</span>
+  <span style="font-family:var(--mono);font-size:10px;color:var(--muted)">vs</span>
+  <span style="font-weight:600;font-size:13px;color:var(--red)">Bournemouth</span>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--blue);line-height:1">65<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Home</div>
+  <div style="height:3px;background:rgba(77,166,255,0.2);border-radius:100px"><div style="width:65%;height:100%;background:var(--blue);border-radius:100px"></div></div></div>
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--amber);line-height:1">18<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Draw</div>
+  <div style="height:3px;background:rgba(255,179,71,0.15);border-radius:100px"><div style="width:18%;height:100%;background:var(--amber);border-radius:100px"></div></div></div>
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--red);line-height:1">17<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Away</div>
+  <div style="height:3px;background:rgba(255,77,109,0.12);border-radius:100px"><div style="width:17%;height:100%;background:var(--red);border-radius:100px"></div></div></div>
+</div>
+<div style="margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--blue)">Model favours: Arsenal</div>
+</div><div style="background:var(--s1);padding:22px;text-align:center">
+<div style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;margin-bottom:10px">GW32 fixture</div>
+<div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:18px">
+  <span style="font-weight:600;font-size:13px;color:var(--blue)">Brentford</span>
+  <span style="font-family:var(--mono);font-size:10px;color:var(--muted)">vs</span>
+  <span style="font-weight:600;font-size:13px;color:var(--red)">Everton</span>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--blue);line-height:1">66<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Home</div>
+  <div style="height:3px;background:rgba(77,166,255,0.2);border-radius:100px"><div style="width:66%;height:100%;background:var(--blue);border-radius:100px"></div></div></div>
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--amber);line-height:1">7<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Draw</div>
+  <div style="height:3px;background:rgba(255,179,71,0.15);border-radius:100px"><div style="width:7%;height:100%;background:var(--amber);border-radius:100px"></div></div></div>
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--red);line-height:1">27<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Away</div>
+  <div style="height:3px;background:rgba(255,77,109,0.12);border-radius:100px"><div style="width:27%;height:100%;background:var(--red);border-radius:100px"></div></div></div>
+</div>
+<div style="margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--blue)">Model favours: Brentford</div>
+</div><div style="background:var(--s1);padding:22px;text-align:center">
+<div style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;margin-bottom:10px">GW32 fixture</div>
+<div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:18px">
+  <span style="font-weight:600;font-size:13px;color:var(--blue)">Burnley</span>
+  <span style="font-family:var(--mono);font-size:10px;color:var(--muted)">vs</span>
+  <span style="font-weight:600;font-size:13px;color:var(--red)">Brighton</span>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--blue);line-height:1">63<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Home</div>
+  <div style="height:3px;background:rgba(77,166,255,0.2);border-radius:100px"><div style="width:63%;height:100%;background:var(--blue);border-radius:100px"></div></div></div>
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--amber);line-height:1">14<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Draw</div>
+  <div style="height:3px;background:rgba(255,179,71,0.15);border-radius:100px"><div style="width:14%;height:100%;background:var(--amber);border-radius:100px"></div></div></div>
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--red);line-height:1">23<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Away</div>
+  <div style="height:3px;background:rgba(255,77,109,0.12);border-radius:100px"><div style="width:23%;height:100%;background:var(--red);border-radius:100px"></div></div></div>
+</div>
+<div style="margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--blue)">Model favours: Burnley</div>
+</div><div style="background:var(--s1);padding:22px;text-align:center">
+<div style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;margin-bottom:10px">GW32 fixture</div>
+<div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:18px">
+  <span style="font-weight:600;font-size:13px;color:var(--blue)">Liverpool</span>
+  <span style="font-family:var(--mono);font-size:10px;color:var(--muted)">vs</span>
+  <span style="font-weight:600;font-size:13px;color:var(--red)">Fulham</span>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--blue);line-height:1">44<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Home</div>
+  <div style="height:3px;background:rgba(77,166,255,0.2);border-radius:100px"><div style="width:44%;height:100%;background:var(--blue);border-radius:100px"></div></div></div>
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--amber);line-height:1">18<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Draw</div>
+  <div style="height:3px;background:rgba(255,179,71,0.15);border-radius:100px"><div style="width:18%;height:100%;background:var(--amber);border-radius:100px"></div></div></div>
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--red);line-height:1">39<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Away</div>
+  <div style="height:3px;background:rgba(255,77,109,0.12);border-radius:100px"><div style="width:39%;height:100%;background:var(--red);border-radius:100px"></div></div></div>
+</div>
+<div style="margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--blue)">Model favours: Liverpool</div>
+</div><div style="background:var(--s1);padding:22px;text-align:center">
+<div style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;margin-bottom:10px">GW32 fixture</div>
+<div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:18px">
+  <span style="font-weight:600;font-size:13px;color:var(--blue)">Crystal Palace</span>
+  <span style="font-family:var(--mono);font-size:10px;color:var(--muted)">vs</span>
+  <span style="font-weight:600;font-size:13px;color:var(--red)">Newcastle</span>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--blue);line-height:1">79<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Home</div>
+  <div style="height:3px;background:rgba(77,166,255,0.2);border-radius:100px"><div style="width:79%;height:100%;background:var(--blue);border-radius:100px"></div></div></div>
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--amber);line-height:1">7<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Draw</div>
+  <div style="height:3px;background:rgba(255,179,71,0.15);border-radius:100px"><div style="width:7%;height:100%;background:var(--amber);border-radius:100px"></div></div></div>
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--red);line-height:1">14<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Away</div>
+  <div style="height:3px;background:rgba(255,77,109,0.12);border-radius:100px"><div style="width:14%;height:100%;background:var(--red);border-radius:100px"></div></div></div>
+</div>
+<div style="margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--blue)">Model favours: Crystal Palace</div>
+</div><div style="background:var(--s1);padding:22px;text-align:center">
+<div style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;margin-bottom:10px">GW32 fixture</div>
+<div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:18px">
+  <span style="font-weight:600;font-size:13px;color:var(--blue)">Nott'm Forest</span>
+  <span style="font-family:var(--mono);font-size:10px;color:var(--muted)">vs</span>
+  <span style="font-weight:600;font-size:13px;color:var(--red)">Aston Villa</span>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--blue);line-height:1">28<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Home</div>
+  <div style="height:3px;background:rgba(77,166,255,0.2);border-radius:100px"><div style="width:28%;height:100%;background:var(--blue);border-radius:100px"></div></div></div>
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--amber);line-height:1">36<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Draw</div>
+  <div style="height:3px;background:rgba(255,179,71,0.15);border-radius:100px"><div style="width:36%;height:100%;background:var(--amber);border-radius:100px"></div></div></div>
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--red);line-height:1">36<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Away</div>
+  <div style="height:3px;background:rgba(255,77,109,0.12);border-radius:100px"><div style="width:36%;height:100%;background:var(--red);border-radius:100px"></div></div></div>
+</div>
+<div style="margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--red)">Model favours: Aston Villa</div>
+</div><div style="background:var(--s1);padding:22px;text-align:center">
+<div style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;margin-bottom:10px">GW32 fixture</div>
+<div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:18px">
+  <span style="font-weight:600;font-size:13px;color:var(--blue)">Sunderland</span>
+  <span style="font-family:var(--mono);font-size:10px;color:var(--muted)">vs</span>
+  <span style="font-weight:600;font-size:13px;color:var(--red)">Tottenham</span>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--blue);line-height:1">10<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Home</div>
+  <div style="height:3px;background:rgba(77,166,255,0.2);border-radius:100px"><div style="width:10%;height:100%;background:var(--blue);border-radius:100px"></div></div></div>
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--amber);line-height:1">30<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Draw</div>
+  <div style="height:3px;background:rgba(255,179,71,0.15);border-radius:100px"><div style="width:30%;height:100%;background:var(--amber);border-radius:100px"></div></div></div>
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--red);line-height:1">59<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Away</div>
+  <div style="height:3px;background:rgba(255,77,109,0.12);border-radius:100px"><div style="width:59%;height:100%;background:var(--red);border-radius:100px"></div></div></div>
+</div>
+<div style="margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--red)">Model favours: Tottenham</div>
+</div><div style="background:var(--s1);padding:22px;text-align:center">
+<div style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;margin-bottom:10px">GW32 fixture</div>
+<div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:18px">
+  <span style="font-weight:600;font-size:13px;color:var(--blue)">Chelsea</span>
+  <span style="font-family:var(--mono);font-size:10px;color:var(--muted)">vs</span>
+  <span style="font-weight:600;font-size:13px;color:var(--red)">Man City</span>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--blue);line-height:1">56<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Home</div>
+  <div style="height:3px;background:rgba(77,166,255,0.2);border-radius:100px"><div style="width:56%;height:100%;background:var(--blue);border-radius:100px"></div></div></div>
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--amber);line-height:1">34<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Draw</div>
+  <div style="height:3px;background:rgba(255,179,71,0.15);border-radius:100px"><div style="width:34%;height:100%;background:var(--amber);border-radius:100px"></div></div></div>
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--red);line-height:1">10<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Away</div>
+  <div style="height:3px;background:rgba(255,77,109,0.12);border-radius:100px"><div style="width:10%;height:100%;background:var(--red);border-radius:100px"></div></div></div>
+</div>
+<div style="margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--blue)">Model favours: Chelsea</div>
+</div><div style="background:var(--s1);padding:22px;text-align:center">
+<div style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;margin-bottom:10px">GW32 fixture</div>
+<div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:18px">
+  <span style="font-weight:600;font-size:13px;color:var(--blue)">Man United</span>
+  <span style="font-family:var(--mono);font-size:10px;color:var(--muted)">vs</span>
+  <span style="font-weight:600;font-size:13px;color:var(--red)">Leeds</span>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--blue);line-height:1">59<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Home</div>
+  <div style="height:3px;background:rgba(77,166,255,0.2);border-radius:100px"><div style="width:59%;height:100%;background:var(--blue);border-radius:100px"></div></div></div>
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--amber);line-height:1">19<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Draw</div>
+  <div style="height:3px;background:rgba(255,179,71,0.15);border-radius:100px"><div style="width:19%;height:100%;background:var(--amber);border-radius:100px"></div></div></div>
+  <div><div style="font-family:var(--display);font-size:28px;color:var(--red);line-height:1">22<span style="font-size:12px">%</span></div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;margin:2px 0 6px">Away</div>
+  <div style="height:3px;background:rgba(255,77,109,0.12);border-radius:100px"><div style="width:22%;height:100%;background:var(--red);border-radius:100px"></div></div></div>
+</div>
+<div style="margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--blue)">Model favours: Man United</div>
+</div></div>
+</div>
+
+<div class="divider"></div>
+
+<div class="grid g3" style="border-top:1px solid var(--border)">
+  <div class="card">
+    <div class="slabel">What drives predictions</div>
+    <div class="ctitle" style="margin-bottom:8px">FEATURE<br/>IMPORTANCE</div>
+    <p style="font-size:12px;color:var(--muted);line-height:1.65;margin-bottom:20px">Permutation importance — measures how much accuracy drops when each feature is randomly shuffled.</p>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:185px;flex-shrink:0">ProbH</span>
+<div style="flex:1;height:3px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:100%;height:100%;background:var(--accent);border-radius:100px"></div></div>
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:38px;text-align:right">17.3%</span>
+</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:185px;flex-shrink:0">AwayELO</span>
+<div style="flex:1;height:3px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:67%;height:100%;background:var(--purple);border-radius:100px"></div></div>
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:38px;text-align:right">11.7%</span>
+</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:185px;flex-shrink:0">HomeForm_Season</span>
+<div style="flex:1;height:3px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:44%;height:100%;background:var(--purple);border-radius:100px"></div></div>
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:38px;text-align:right">7.6%</span>
+</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:185px;flex-shrink:0">HomeELO</span>
+<div style="flex:1;height:3px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:32%;height:100%;background:var(--blue);border-radius:100px"></div></div>
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:38px;text-align:right">5.5%</span>
+</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:185px;flex-shrink:0">AwayForm_Blended</span>
+<div style="flex:1;height:3px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:32%;height:100%;background:var(--blue);border-radius:100px"></div></div>
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:38px;text-align:right">5.5%</span>
+</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:185px;flex-shrink:0">HomeForm_Blended</span>
+<div style="flex:1;height:3px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:29%;height:100%;background:var(--blue);border-radius:100px"></div></div>
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:38px;text-align:right">5.1%</span>
+</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:185px;flex-shrink:0">SeasonProgress</span>
+<div style="flex:1;height:3px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:29%;height:100%;background:var(--amber);border-radius:100px"></div></div>
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:38px;text-align:right">5.0%</span>
+</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:185px;flex-shrink:0">HomeShotRatio</span>
+<div style="flex:1;height:3px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:27%;height:100%;background:var(--amber);border-radius:100px"></div></div>
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:38px;text-align:right">4.6%</span>
+</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:185px;flex-shrink:0">AwayForm_Season</span>
+<div style="flex:1;height:3px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:26%;height:100%;background:var(--accent);border-radius:100px"></div></div>
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:38px;text-align:right">4.5%</span>
+</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:185px;flex-shrink:0">HomeRest</span>
+<div style="flex:1;height:3px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:23%;height:100%;background:var(--amber);border-radius:100px"></div></div>
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:38px;text-align:right">3.9%</span>
+</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:185px;flex-shrink:0">HomeConcededAvg</span>
+<div style="flex:1;height:3px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:21%;height:100%;background:var(--purple);border-radius:100px"></div></div>
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:38px;text-align:right">3.7%</span>
+</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:185px;flex-shrink:0">ProbD</span>
+<div style="flex:1;height:3px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:20%;height:100%;background:var(--blue);border-radius:100px"></div></div>
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:38px;text-align:right">3.5%</span>
+</div>
+  </div>
+  <div class="card">
+    <div class="slabel">Honest performance</div>
+    <div class="ctitle" style="margin-bottom:8px">WALK-FORWARD<br/>VALIDATION</div>
+    <p style="font-size:12px;color:var(--muted);line-height:1.65;margin-bottom:18px">Train on all prior seasons, test on the next one. Never look into the future. This is the only valid performance measure for time-series ML.</p>
+    <div style="display:flex;gap:24px;margin-bottom:18px">
+      <div><div style="font-family:var(--display);font-size:36px;color:var(--purple)">50.8<span style="font-size:16px">%</span></div><div style="font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em">mean accuracy</div></div>
+      <div><div style="font-family:var(--display);font-size:36px;color:var(--amber)">1.108</div><div style="font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em">mean log loss</div></div>
+    </div>
+    <div style="display:flex;align-items:flex-end;gap:12px;height:90px;margin-bottom:8px"><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px">
+<div style="width:100%;background:var(--s2);border-radius:3px 3px 0 0;height:90px;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;position:relative">
+  <div style="width:100%;height:78%;background:linear-gradient(180deg,var(--purple) 0%,rgba(124,108,252,0.3) 100%);border-radius:3px 3px 0 0"></div>
+  <span style="position:absolute;bottom:3px;font-family:var(--mono);font-size:9px;color:var(--text)">47.2%</span>
+</div>
+<span style="font-family:var(--mono);font-size:9px;color:var(--muted);writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);height:38px">2021/2022</span>
+</div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px">
+<div style="width:100%;background:var(--s2);border-radius:3px 3px 0 0;height:90px;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;position:relative">
+  <div style="width:100%;height:83%;background:linear-gradient(180deg,var(--purple) 0%,rgba(124,108,252,0.3) 100%);border-radius:3px 3px 0 0"></div>
+  <span style="position:absolute;bottom:3px;font-family:var(--mono);font-size:9px;color:var(--text)">50.0%</span>
+</div>
+<span style="font-family:var(--mono);font-size:9px;color:var(--muted);writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);height:38px">2022/2023</span>
+</div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px">
+<div style="width:100%;background:var(--s2);border-radius:3px 3px 0 0;height:90px;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;position:relative">
+  <div style="width:100%;height:92%;background:linear-gradient(180deg,var(--purple) 0%,rgba(124,108,252,0.3) 100%);border-radius:3px 3px 0 0"></div>
+  <span style="position:absolute;bottom:3px;font-family:var(--mono);font-size:9px;color:var(--text)">55.4%</span>
+</div>
+<span style="font-family:var(--mono);font-size:9px;color:var(--muted);writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);height:38px">2023/2024</span>
+</div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px">
+<div style="width:100%;background:var(--s2);border-radius:3px 3px 0 0;height:90px;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;position:relative">
+  <div style="width:100%;height:84%;background:linear-gradient(180deg,var(--purple) 0%,rgba(124,108,252,0.3) 100%);border-radius:3px 3px 0 0"></div>
+  <span style="position:absolute;bottom:3px;font-family:var(--mono);font-size:9px;color:var(--text)">50.6%</span>
+</div>
+<span style="font-family:var(--mono);font-size:9px;color:var(--muted);writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);height:38px">2024/2025</span>
+</div></div>
+    <div style="height:1px;background:var(--border);margin:16px 0"></div>
+    <p style="font-size:11px;color:var(--muted);line-height:1.75">Baseline (always predict home win): ~45.0%. Model beats baseline in 3 of 4 folds. Log loss penalises overconfident wrong predictions — the model is rewarded for expressing honest uncertainty.</p>
+  </div>
+  <div class="card">
+    <div class="slabel">Structural quality</div>
+    <div class="ctitle" style="margin-bottom:8px">ELO POWER<br/>INDEX</div>
+    <p style="font-size:12px;color:var(--muted);line-height:1.65;margin-bottom:20px">16-season ELO with 10% seasonal decay each August. A team's summer squad changes are modelled as a regression toward the league mean.</p>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:11px">
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:18px">1</span>
+<span style="font-size:13px;font-weight:500;width:118px;color:var(--accent)">Arsenal</span>
+<div style="flex:1;height:3px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:100%;height:100%;background:linear-gradient(90deg,var(--purple),var(--accent));border-radius:100px"></div></div>
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:42px;text-align:right">1734</span>
+</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:11px">
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:18px">2</span>
+<span style="font-size:13px;font-weight:500;width:118px;color:var(--text)">Man City</span>
+<div style="flex:1;height:3px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:90%;height:100%;background:linear-gradient(90deg,var(--purple),var(--accent));border-radius:100px"></div></div>
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:42px;text-align:right">1699</span>
+</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:11px">
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:18px">3</span>
+<span style="font-size:13px;font-weight:500;width:118px;color:var(--text)">Liverpool</span>
+<div style="flex:1;height:3px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:68%;height:100%;background:linear-gradient(90deg,var(--purple),var(--accent));border-radius:100px"></div></div>
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:42px;text-align:right">1629</span>
+</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:11px">
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:18px">4</span>
+<span style="font-size:13px;font-weight:500;width:118px;color:var(--text)">Aston Villa</span>
+<div style="flex:1;height:3px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:63%;height:100%;background:linear-gradient(90deg,var(--purple),var(--accent));border-radius:100px"></div></div>
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:42px;text-align:right">1610</span>
+</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:11px">
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:18px">5</span>
+<span style="font-size:13px;font-weight:500;width:118px;color:var(--text)">Chelsea</span>
+<div style="flex:1;height:3px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:58%;height:100%;background:linear-gradient(90deg,var(--purple),var(--accent));border-radius:100px"></div></div>
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:42px;text-align:right">1595</span>
+</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:11px">
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:18px">6</span>
+<span style="font-size:13px;font-weight:500;width:118px;color:var(--text)">Man United</span>
+<div style="flex:1;height:3px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:58%;height:100%;background:linear-gradient(90deg,var(--purple),var(--accent));border-radius:100px"></div></div>
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:42px;text-align:right">1595</span>
+</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:11px">
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:18px">7</span>
+<span style="font-size:13px;font-weight:500;width:118px;color:var(--text)">Brighton</span>
+<div style="flex:1;height:3px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:51%;height:100%;background:linear-gradient(90deg,var(--purple),var(--accent));border-radius:100px"></div></div>
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:42px;text-align:right">1569</span>
+</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:11px">
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:18px">8</span>
+<span style="font-size:13px;font-weight:500;width:118px;color:var(--text)">Brentford</span>
+<div style="flex:1;height:3px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:47%;height:100%;background:linear-gradient(90deg,var(--purple),var(--accent));border-radius:100px"></div></div>
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:42px;text-align:right">1558</span>
+</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:11px">
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:18px">9</span>
+<span style="font-size:13px;font-weight:500;width:118px;color:var(--text)">Newcastle</span>
+<div style="flex:1;height:3px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:46%;height:100%;background:linear-gradient(90deg,var(--purple),var(--accent));border-radius:100px"></div></div>
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:42px;text-align:right">1553</span>
+</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:11px">
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:18px">10</span>
+<span style="font-size:13px;font-weight:500;width:118px;color:var(--text)">Everton</span>
+<div style="flex:1;height:3px;background:var(--s2);border-radius:100px;overflow:hidden">
+  <div style="width:46%;height:100%;background:linear-gradient(90deg,var(--purple),var(--accent));border-radius:100px"></div></div>
+<span style="font-family:var(--mono);font-size:11px;color:var(--muted);width:42px;text-align:right">1553</span>
+</div>
+    <div style="height:1px;background:var(--border);margin:16px 0"></div>
+    <p style="font-size:11px;color:var(--muted);font-family:var(--mono);line-height:1.9">1500 = league mean · +100 pts ≈ 64% head-to-head win rate<br/>Decay prevents stale dominance carrying season-to-season</p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="story">
+<div class="wrap">
+<div class="story-inner">
+  <h2>HOW THIS MODEL WORKS</h2>
+  <p>Most football prediction models make a fundamental error: they treat historical form as equally reliable whether it's from last week or three seasons ago. This model uses a <strong>progressive blending system</strong> — at the start of the season, predictions lean heavily on multi-year ELO ratings because you have no current data. By GW31, <strong class="highlight">82% of the form signal comes from this season alone</strong>. The model adapts its own confidence as evidence accumulates.</p>
+  <p>The <strong>5,000 Monte Carlo simulations</strong> are what separate a "who will win" prediction from a probabilistic forecast. Each simulation independently draws match outcomes from the model's probability distributions and tallies a final table. Arsenal winning 99.3% of simulations isn't a statement of certainty — it's a statement that <strong>in virtually every plausible path through the remaining 7 games, Arsenal finish top</strong>, given their 9-point lead.</p>
+  <p>Walk-forward validation is the only honest performance measure for a time-series model. Training on 2021-25 and testing on 2025-26 would be data leakage. Instead, each validation fold <strong>trains only on the past and predicts the future</strong> — the same constraint the model faces in production.</p>
+  <div class="methodology-grid">
+    <div class="method-card"><h3>ELO + decay</h3><p>Standard Elo with 10% seasonal regression. K=20, home advantage=100. Decay prevents a team's 2022 peak inflating their 2026 rating.</p></div>
+    <div class="method-card"><h3>Progressive form blend</h3><p>Weight = SeasonProgress × current-season EWMA + (1-SP) × long-run EWMA. Shifts from historical prior to live evidence as the season unfolds.</p></div>
+    <div class="method-card"><h3>Market signal</h3><p>Bookmaker implied probabilities (overround removed) are the single most informative feature. Markets encode injury news, team selection, and analyst consensus that public stats don't capture.</p></div>
+    <div class="method-card"><h3>Monte Carlo simulation</h3><p>5,000 independent season completions. Each remaining match drawn from predicted H/D/A probabilities. Title probability = fraction of simulations won.</p></div>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="footer">
+<div class="wrap" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;width:100%">
+  <div class="footer-block">
+    <span style="font-family:var(--display);font-size:18px;color:var(--text)">PL PREDICTOR v4</span><br/>
+    Data source: football-data.co.uk · 16 seasons · 6,009 matches<br/>
+    Model: HistGradientBoostingClassifier · 26 features · sklearn<br/>
+    Simulation: 5,000 Monte Carlo runs · Cutoff: 2026-03-22
+  </div>
+  <div class="footer-block" style="text-align:right">
+    <span style="color:var(--accent);font-family:var(--display);font-size:14px">KEY DESIGN DECISIONS</span><br/>
+    Odds-era training only — no flat-prior pollution pre-2019<br/>
+    Temporal leakage-free features — all use .shift(1) before window<br/>
+    Walk-forward CV — only ever train on the past<br/>
+    Log loss objective — rewards calibrated probabilities
+  </div>
+</div>
+</div>
+
+</body>
+</html>
