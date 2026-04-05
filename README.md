@@ -8,7 +8,6 @@
 
 ![Python](https://img.shields.io/badge/Python-3.9%2B-blue)
 ![scikit-learn](https://img.shields.io/badge/scikit--learn-1.2%2B-orange)
-![License](https://img.shields.io/badge/License-MIT-green)
 
 
 
