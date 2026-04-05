@@ -224,10 +224,4 @@ No other dependencies. The HTML dashboard is fully self-contained.
 
 ---
 
-## License
-
-MIT — use freely, attribution appreciated.
-
----
-
 *Built as a demonstration of end-to-end ML pipeline design: problem framing, temporal feature engineering, leakage-free validation, probabilistic simulation, and production-grade output.*
